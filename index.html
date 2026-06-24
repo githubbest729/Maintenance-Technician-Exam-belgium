@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maintenance Technician Pre-Employment Assessment — Belgium</title>
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --border: #d1d5db;
+    --border-focus: #2563eb;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
+    --accent: #1d4ed8;
+    --accent-light: #eff6ff;
+    --accent-dark: #1e3a8a;
+    --section-a: #0f4c75;
+    --section-b: #1b6ca8;
+    --section-c: #1e96fc;
+    --pass: #166534;
+    --pass-bg: #dcfce7;
+    --pass-border: #86efac;
+    --fail: #991b1b;
+    --fail-bg: #fee2e2;
+    --fail-border: #fca5a5;
+    --correct: #14532d;
+    --correct-bg: #f0fdf4;
+    --correct-border: #4ade80;
+    --wrong: #7f1d1d;
+    --wrong-bg: #fff1f2;
+    --wrong-border: #fda4af;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+    padding-bottom: 60px;
+  }
+  .exam-header {
+    background: linear-gradient(135deg, #0f2d5a 0%, #1d4ed8 100%);
+    color: white;
+    padding: 36px 24px 32px;
+    text-align: center;
+    border-bottom: 4px solid #facc15;
+  }
+  .exam-header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .exam-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .exam-header .subtitle { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
+  .exam-meta { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .meta-item {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius);
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .meta-item .val { font-size: 22px; font-weight: 700; display: block; }
+  .meta-item .lbl { font-size: 11px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.8px; }
+  .instructions-wrap { max-width: 860px; margin: 24px auto 0; padding: 0 16px; }
+  .instructions {
+    background: var(--accent-light);
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+  }
+  .instructions h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--accent); margin-bottom: 10px; }
+  .instructions ul { padding-left: 20px; }
+  .instructions li { margin-bottom: 5px; font-size: 14px; color: var(--text-secondary); }
+  .exam-body { max-width: 860px; margin: 24px auto; padding: 0 16px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin: 32px 0 16px; }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: white; flex-shrink: 0;
+  }
+  .section-icon.a { background: var(--section-a); }
+  .section-icon.b { background: var(--section-b); }
+  .section-icon.c { background: var(--section-c); }
+  .section-info h3 { font-size: 17px; font-weight: 700; }
+  .section-info p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .question-card:focus-within { border-color: var(--border-focus); }
+  .question-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-num {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    min-width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--text-muted);
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.5; }
+  .scenario-tag {
+    display: inline-block;
+    background: #fef3c7; border: 1px solid #fde68a;
+    color: #92400e; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+    padding: 1px 8px; margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .scenario-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #64748b;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  .options-list { padding: 12px 20px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    font-size: 14px;
+  }
+  .option-label:hover { background: var(--accent-light); border-color: #93c5fd; }
+  .option-label input[type="radio"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--accent); }
+  .opt-letter { font-weight: 700; font-size: 12px; color: var(--text-muted); min-width: 18px; flex-shrink: 0; margin-top: 1px; }
+  .option-label.correct-ans { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct); font-weight: 600; }
+  .option-label.wrong-sel { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong); font-weight: 600; }
+  .question-card.answered-correct { border-color: var(--correct-border); }
+  .question-card.answered-wrong { border-color: var(--wrong-border); }
+  .review-note {
+    margin: 0 20px 16px;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: none;
+  }
+  .review-note strong { color: var(--text-primary); }
+  .review-note .ans-label { color: var(--correct); font-weight: 600; }
+  #result-panel { display: none; max-width: 860px; margin: 24px auto 0; padding: 0 16px; }
+  .result-card { border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-md); margin-bottom: 20px; }
+  .result-card.pass { background: var(--pass-bg); border: 2px solid var(--pass-border); }
+  .result-card.fail { background: var(--fail-bg); border: 2px solid var(--fail-border); }
+  .result-verdict { font-size: 32px; font-weight: 800; letter-spacing: 2px; margin-bottom: 6px; }
+  .result-card.pass .result-verdict { color: var(--pass); }
+  .result-card.fail .result-verdict { color: var(--fail); }
+  .result-score-row { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 18px; }
+  .score-stat { text-align: left; }
+  .score-stat .sv { font-size: 28px; font-weight: 800; }
+  .score-stat .sl { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; opacity: 0.7; }
+  .result-card.pass .score-stat .sv { color: var(--pass); }
+  .result-card.fail .score-stat .sv { color: var(--fail); }
+  .button-row { display: flex; gap: 12px; flex-wrap: wrap; max-width: 860px; margin: 28px auto 0; padding: 0 16px; }
+  .btn { padding: 12px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: opacity 0.15s, transform 0.1s; letter-spacing: 0.2px; }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-secondary { background: white; color: var(--text-primary); border: 1px solid var(--border); }
+  .btn-accent { background: #0f766e; color: white; }
+  .missing-msg { display: none; background: #fef9c3; border: 1px solid #fde047; border-radius: 6px; padding: 12px 18px; color: #713f12; font-size: 14px; max-width: 860px; margin: 12px auto 0; padding-left: 16px; padding-right: 16px; }
+  .progress-wrap { max-width: 860px; margin: 16px auto 0; padding: 0 16px; }
+  .progress-bar-bg { background: var(--border); border-radius: 99px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { background: var(--accent); height: 100%; border-radius: 99px; width: 0%; transition: width 0.3s; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  @media (max-width: 600px) {
+    .exam-header h1 { font-size: 20px; }
+    .exam-meta { gap: 12px; }
+    .meta-item { padding: 8px 14px; }
+    .result-score-row { gap: 16px; }
+    .button-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+  <div class="badge">Pre-Employment Technical Assessment</div>
+  <h1>Maintenance Technician Exam</h1>
+  <p class="subtitle">Industrial Maintenance &mdash; Belgium Factory / Production Environment</p>
+  <div class="exam-meta">
+    <div class="meta-item"><span class="val">20</span><span class="lbl">Questions</span></div>
+    <div class="meta-item"><span class="val">100</span><span class="lbl">Total Points</span></div>
+    <div class="meta-item"><span class="val">75%</span><span class="lbl">Pass Mark</span></div>
+    <div class="meta-item"><span class="val">40</span><span class="lbl">Question Bank</span></div>
+  </div>
+</div>
+
+<div class="instructions-wrap">
+  <div class="instructions">
+    <h2>Candidate Instructions</h2>
+    <ul>
+      <li>This exam presents <strong>20 randomly selected questions</strong> from a pool of 40 — every attempt is different.</li>
+      <li>Sections: <strong>12 Multiple Choice + 4 True/False + 4 Scenario-Based</strong> per attempt.</li>
+      <li>Each question carries <strong>5 points</strong>. Total possible score: <strong>100 points</strong>.</li>
+      <li>Select the single best answer for each question. All questions must be answered before submitting.</li>
+      <li>The <strong>pass mark is 75 / 100 (75%)</strong>. Results and correct answers are shown after submission.</li>
+      <li>Click <strong>Retry Exam</strong> to get a fresh random set of 20 questions.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="progress-text">0 of 20 answered</span>
+    <span id="progress-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+</div>
+
+<div class="exam-body" id="exam-body"></div>
+
+<div class="button-row" id="btn-row-submit">
+  <button class="btn btn-primary" onclick="submitExam()">&#10003; Submit Exam</button>
+  <button class="btn btn-secondary" onclick="resetExam()">&#8635; Reset Exam</button>
+</div>
+<div class="missing-msg" id="missing-msg"></div>
+
+<div id="result-panel">
+  <div class="result-card" id="result-card">
+    <div class="result-verdict" id="result-verdict"></div>
+    <div id="result-msg" style="font-size:15px;margin-top:4px;"></div>
+    <div class="result-score-row">
+      <div class="score-stat"><div class="sv" id="score-pts"></div><div class="sl">Points</div></div>
+      <div class="score-stat"><div class="sv" id="score-pct"></div><div class="sl">Score</div></div>
+      <div class="score-stat"><div class="sv" id="score-correct"></div><div class="sl">Correct</div></div>
+      <div class="score-stat"><div class="sv" id="score-wrong"></div><div class="sl">Incorrect</div></div>
+    </div>
+  </div>
+  <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:16px 22px;font-size:14px;color:var(--text-muted);box-shadow:var(--shadow);">
+    &#128269; <strong style="color:var(--text-primary);">Answer Review</strong> &mdash; Scroll up to see each question highlighted. Green = correct, Red = incorrect. Explanations shown below each question.
+  </div>
+</div>
+
+<div class="button-row" id="btn-row-retry" style="display:none;">
+  <button class="btn btn-accent" onclick="retryExam()">&#8635; Retry Exam (New Questions)</button>
+  <button class="btn btn-secondary" onclick="resetExam()">&#10005; Reset &amp; Clear</button>
+</div>
+
+<script>
+// ─── QUESTION BANK ───────────────────────────────────────────────────────────
+// Each question: { id, text, options:[{val,text}], correct, explanation, scenario(opt) }
+
+const BANK_MC = [
+  {
+    id:'mc1',
+    text:'An electric motor trips on overload every time it is started under full load. The overload relay is set correctly. What is the <strong>most likely cause</strong>?',
+    options:[
+      {val:'a',text:'The motor is wired in star instead of delta for running conditions'},
+      {val:'b',text:'The motor lacks a star-delta or soft-starter ramp, causing excessive inrush current at direct-on-line start'},
+      {val:'c',text:'The overload relay is a thermal type and the ambient temperature is too low'},
+      {val:'d',text:'The motor bearings need re-greasing'}
+    ],
+    correct:'b',
+    explanation:'Direct-on-line starting can draw 6–8× the full-load current. Without a star-delta starter or soft-starter, this surge trips a correctly-set overload relay before the motor reaches operating speed.'
+  },
+  {
+    id:'mc2',
+    text:'During a routine inspection you notice the gearbox oil has turned milky-white. What does this indicate?',
+    options:[
+      {val:'a',text:'The oil grade is too high for the operating temperature'},
+      {val:'b',text:'Normal oxidation after a long service interval'},
+      {val:'c',text:'Water contamination, most likely from a failed seal or condensation ingress'},
+      {val:'d',text:'The gearbox is running at correct load and temperature'}
+    ],
+    correct:'c',
+    explanation:'Milky or cloudy oil is a classic sign of water emulsification. This causes loss of lubrication film strength and accelerated gear and bearing wear — typically a worn shaft seal, damaged breather, or cooling jacket leak.'
+  },
+  {
+    id:'mc3',
+    text:'A centrifugal pump is running but delivers no flow. The shaft is rotating and the suction valve is fully open. What should you check <strong>first</strong>?',
+    options:[
+      {val:'a',text:'Whether the pump has lost prime (air locked) or the suction strainer is blocked'},
+      {val:'b',text:'The motor direction of rotation'},
+      {val:'c',text:'The discharge pressure set point on the VFD'},
+      {val:'d',text:'Replace the mechanical seal immediately'}
+    ],
+    correct:'a',
+    explanation:'A centrifugal pump running dry (air-locked) or with a blocked suction strainer will spin freely but deliver no flow. This is the most common cause and quickest to verify before escalating.'
+  },
+  {
+    id:'mc4',
+    text:'A conveyor belt has been tracking to one side and the edge is starting to fray. What is the <strong>correct first corrective action</strong>?',
+    options:[
+      {val:'a',text:'Increase belt tension to maximum to pull it back to centre'},
+      {val:'b',text:'Replace the belt immediately'},
+      {val:'c',text:'Add a rubber guide strip on the fraying side'},
+      {val:'d',text:'Inspect and adjust the tail/snub idler alignment and check for material build-up on rollers'}
+    ],
+    correct:'d',
+    explanation:'Belt mistracking is almost always caused by misaligned idlers, a crooked tail pulley, or material carryback on rollers. These root causes must be corrected — simply tensioning or adding guides does not fix the problem.'
+  },
+  {
+    id:'mc5',
+    text:'A VFD displays fault code "OC" (overcurrent). After clearing, it trips again within seconds of restarting. What is the <strong>most likely cause</strong>?',
+    options:[
+      {val:'a',text:'The motor is running in the wrong direction'},
+      {val:'b',text:'The acceleration ramp time is too short, or there is a mechanical overload / locked rotor condition on the driven equipment'},
+      {val:'c',text:'The VFD input voltage is too high'},
+      {val:'d',text:'The motor cooling fan is missing'}
+    ],
+    correct:'b',
+    explanation:'Repeated OC faults that return immediately after reset indicate either too aggressive an acceleration ramp (spiking current) or a genuine mechanical overload — blocked impeller, seized bearing, or jammed mechanism.'
+  },
+  {
+    id:'mc6',
+    text:'You are reading a three-phase motor circuit diagram. The symbol shows a coil with a dotted outline and three normally-open contacts labelled K1. What component does this represent?',
+    options:[
+      {val:'a',text:'A three-phase circuit breaker'},
+      {val:'b',text:'A thermal overload relay'},
+      {val:'c',text:'A main contactor (electromagnetic contactor with its power contacts)'},
+      {val:'d',text:'A star-point terminal block'}
+    ],
+    correct:'c',
+    explanation:'In IEC schematic notation, a coil symbol (K1) operating a set of normally-open main contacts represents a contactor. The dotted enclosure groups the coil and contacts to show they are mechanically linked.'
+  },
+  {
+    id:'mc7',
+    text:'A bearing is running at 95 °C; the normal operating temperature is ~55 °C. What should you investigate <strong>first</strong>?',
+    options:[
+      {val:'a',text:'Lubricant quantity and type — over-greasing, under-greasing, or wrong grease grade'},
+      {val:'b',text:'Replace the bearing immediately without further diagnosis'},
+      {val:'c',text:'Check the ambient temperature and install a cooling fan nearby'},
+      {val:'d',text:'Reduce the motor speed via the VFD by 20%'}
+    ],
+    correct:'a',
+    explanation:'Bearing overheating is most frequently caused by incorrect lubrication — too much grease causes churning heat, too little causes metal-to-metal contact, and wrong grade breaks down under operating conditions.'
+  },
+  {
+    id:'mc8',
+    text:'A PLC digital output LED is ON but the connected solenoid valve does not operate. What is the <strong>most logical next step</strong>?',
+    options:[
+      {val:'a',text:'Replace the PLC output module immediately'},
+      {val:'b',text:'Force the input signal from the HMI and wait'},
+      {val:'c',text:'Restart the PLC in stop mode'},
+      {val:'d',text:'Measure the voltage at the solenoid valve terminals; if correct, check the solenoid coil continuity'}
+    ],
+    correct:'d',
+    explanation:'If the PLC output LED is ON, the PLC side is working. The fault is field-side: check that control voltage is reaching the solenoid terminals, then verify the coil resistance. This avoids unnecessary module replacement.'
+  },
+  {
+    id:'mc9',
+    text:'An inductive proximity sensor power LED is ON but the output LED never activates even when metal is present. What is the <strong>most likely fault</strong>?',
+    options:[
+      {val:'a',text:'The sensor is wired normally-closed and should be changed to normally-open'},
+      {val:'b',text:'The sensing distance is exceeded — the target is too far from the sensor face'},
+      {val:'c',text:'The PLC input module is faulty'},
+      {val:'d',text:'The conveyor speed is too high for any sensor type'}
+    ],
+    correct:'b',
+    explanation:'Power ON but no switching output despite target presence most commonly indicates the target is beyond the rated sensing range (Sn). Vibration or bracket movement can shift the gap over time.'
+  },
+  {
+    id:'mc10',
+    text:'During a PM oil change, the gearbox drain plug magnet is heavily covered with fine metallic swarf. What action should you take?',
+    options:[
+      {val:'a',text:'This is normal; all gearboxes produce fine particles. Clean and refill.'},
+      {val:'b',text:'The oil is too viscous; switch to a lower-grade oil'},
+      {val:'c',text:'Internal gear or bearing wear is occurring — take an oil sample for analysis and increase monitoring frequency'},
+      {val:'d',text:'This only happens on new gearboxes during run-in'}
+    ],
+    correct:'c',
+    explanation:'An unusually heavy accumulation of metallic swarf indicates active internal wear on gears or bearings. This is a predictive maintenance warning that requires oil sample analysis and possible internal inspection.'
+  },
+  {
+    id:'mc11',
+    text:'A pneumatic cylinder is not extending even though the solenoid valve is energised and air supply is confirmed. What should you check next?',
+    options:[
+      {val:'a',text:'Check the cylinder for a blocked port, damaged piston seal, or mechanical binding'},
+      {val:'b',text:'Increase the supply pressure above 10 bar'},
+      {val:'c',text:'Replace the solenoid valve coil'},
+      {val:'d',text:'Check whether the PLC program has the correct rung logic'}
+    ],
+    correct:'a',
+    explanation:'Air supply is confirmed and the solenoid is energised, so the valve is switching. The fault lies in the cylinder circuit: blocked port, worn piston seal, or a mechanical hard stop preventing rod movement.'
+  },
+  {
+    id:'mc12',
+    text:'What is the <strong>primary purpose</strong> of logging a corrective maintenance intervention in a CMMS?',
+    options:[
+      {val:'a',text:'To comply with a Belgian legal requirement to write in French or Dutch'},
+      {val:'b',text:'To allow the production manager to check who was responsible for the breakdown'},
+      {val:'c',text:'To request additional spare parts from procurement automatically'},
+      {val:'d',text:'To build a fault history enabling trend analysis, recurring fault detection, and PM plan optimisation'}
+    ],
+    correct:'d',
+    explanation:'The core value of CMMS logging is creating a searchable maintenance history per asset. This data reveals repeat failures, supports MTBF calculations, and drives data-based decisions on PM intervals and spare parts stocking.'
+  },
+  {
+    id:'mc13',
+    text:'A three-phase motor runs but draws significantly higher current on one phase than the others. What is the <strong>most likely cause</strong>?',
+    options:[
+      {val:'a',text:'The motor cooling fan is blocked'},
+      {val:'b',text:'One phase supply voltage is lower than the others — a supply imbalance or high-resistance connection'},
+      {val:'c',text:'The overload relay trip class is too high'},
+      {val:'d',text:'The motor is operating below its rated speed'}
+    ],
+    correct:'b',
+    explanation:'Phase current imbalance in a three-phase motor is typically caused by supply voltage imbalance or a high-resistance connection (loose terminal, corroded contact). Even a small voltage imbalance causes a disproportionately large current imbalance and winding overheating.'
+  },
+  {
+    id:'mc14',
+    text:'You need to measure the insulation resistance of a motor winding before putting it back in service after damp storage. Which instrument do you use?',
+    options:[
+      {val:'a',text:'Clamp meter set to AC current'},
+      {val:'b',text:'Standard digital multimeter on the resistance range'},
+      {val:'c',text:'Megohmmeter (insulation resistance tester / Megger)'},
+      {val:'d',text:'Oscilloscope on the DC voltage channel'}
+    ],
+    correct:'c',
+    explanation:'A megohmmeter (Megger) applies a high DC test voltage (typically 500 V or 1000 V) to stress-test the insulation and measure resistance in megaohms. A standard multimeter cannot detect insulation degradation because its test voltage is too low.'
+  },
+  {
+    id:'mc15',
+    text:'A hydraulic cylinder is drifting (slowly extending) under load with the directional control valve in the neutral position. What is the most probable cause?',
+    options:[
+      {val:'a',text:'The hydraulic pump pressure is set too high'},
+      {val:'b',text:'Internal bypass across the cylinder piston seal, or leakage past the directional valve seats'},
+      {val:'c',text:'The hydraulic oil viscosity is too low for the ambient temperature'},
+      {val:'d',text:'The cylinder rod is bent'}
+    ],
+    correct:'b',
+    explanation:'A drifting cylinder with the valve in neutral indicates internal leakage — either worn piston seals allowing fluid to bypass from the cap to rod side, or a leaking directional valve not fully blocking the port.'
+  },
+  {
+    id:'mc16',
+    text:'What does the term "MTBF" mean in the context of industrial maintenance?',
+    options:[
+      {val:'a',text:'Maximum Time Between Faults'},
+      {val:'b',text:'Mean Time Before Failure — average operating time between two consecutive failures of a component or machine'},
+      {val:'c',text:'Minimum Test Benchmark Factor — a quality standard for spare parts'},
+      {val:'d',text:'Mean Total Breakdown Frequency — a monthly KPI for maintenance departments'}
+    ],
+    correct:'b',
+    explanation:'MTBF (Mean Time Between Failures) is a key reliability metric that calculates the average time an asset operates between failures. A higher MTBF indicates better reliability. It is used to plan PM intervals and justify capital expenditure on equipment replacement.'
+  },
+  {
+    id:'mc17',
+    text:'When coupling a motor to a gearbox after a repair, you measure a parallel misalignment of 0.8 mm at the coupling. The coupling manufacturer allows a maximum of 0.2 mm. What should you do?',
+    options:[
+      {val:'a',text:'Run the machine at half speed and monitor vibration; re-align at the next shutdown'},
+      {val:'b',text:'Re-align the motor using shims and adjustment screws until within the 0.2 mm tolerance before starting'},
+      {val:'c',text:'Apply extra coupling grease to compensate for the misalignment'},
+      {val:'d',text:'Replace the coupling type with a flexible jaw coupling that can absorb more misalignment'}
+    ],
+    correct:'b',
+    explanation:'Operating beyond the coupling manufacturer\'s misalignment tolerance causes excessive vibration, accelerated bearing wear, coupling fatigue, and shaft seal failure. Correct alignment must be achieved before commissioning — not deferred to a later shutdown.'
+  },
+  {
+    id:'mc18',
+    text:'A frequency drive (VFD) is displaying an "OH" or "OHT" fault (overtemperature). The ambient temperature in the electrical cabinet is normal. What should you check first on the VFD itself?',
+    options:[
+      {val:'a',text:'Increase the motor rated current parameter in the VFD'},
+      {val:'b',text:'The VFD internal cooling fan and the heatsink fins for blockage or dust accumulation'},
+      {val:'c',text:'Reduce the output frequency by 10 Hz to lower motor heat'},
+      {val:'d',text:'Check that the VFD is running on the correct supply voltage'}
+    ],
+    correct:'b',
+    explanation:'VFD overtemperature faults with normal ambient temperature are almost always caused by a failed internal cooling fan or blocked heatsink fins (dust, dirt, or debris). The VFD dissipates heat through its heatsink — blocked cooling causes rapid thermal shutdown.'
+  },
+  {
+    id:'mc19',
+    text:'On a Siemens S7-1200 PLC, you observe in online monitoring that an output coil (Q0.0) is energised in the program, but the physical output LED is OFF. What does this most likely indicate?',
+    options:[
+      {val:'a',text:'The PLC program has a software error in the rung'},
+      {val:'b',text:'The output module is in RUN mode but the CPU is in STOP mode'},
+      {val:'c',text:'The output module supply voltage (L+ / 24 VDC) is missing or the output has a blown internal fuse/protection'},
+      {val:'d',text:'The HMI is sending a conflicting command to the same output'}
+    ],
+    correct:'c',
+    explanation:'If the program shows the output coil as energised but the physical LED is OFF, the PLC logic is commanding the output correctly. The likely fault is missing 24 VDC supply to the output module, a blown module fuse, or a failed output transistor/relay on that channel.'
+  },
+  {
+    id:'mc20',
+    text:'A V-belt drive is squealing during startup and the belt feels glazed and hard on inspection. What is the correct action?',
+    options:[
+      {val:'a',text:'Apply belt dressing spray to restore grip'},
+      {val:'b',text:'Increase belt tension significantly to eliminate slipping'},
+      {val:'c',text:'Replace the glazed belt and check pulley alignment and correct tension per the drive manufacturer\'s specification'},
+      {val:'d',text:'Run the machine at lower speed until the belt warms up and softens'}
+    ],
+    correct:'c',
+    explanation:'A glazed belt has lost its friction surface due to slipping — this cannot be restored with dressing spray, which makes the problem worse. The belt must be replaced. At the same time, check pulley alignment (misalignment causes premature belt wear) and set tension correctly per the manufacturer\'s specification.'
+  },
+  {
+    id:'mc21',
+    text:'You are asked to replace a failed contactor in a motor starter panel. The original contactor is a 3-pole AC-3 rated 22 kW / 400 V. You only have a 3-pole AC-3 rated 15 kW / 400 V available in stock. What should you do?',
+    options:[
+      {val:'a',text:'Install the 15 kW contactor temporarily — it will work for a short time'},
+      {val:'b',text:'Install it and reduce the motor load to 15 kW by adjusting the VFD'},
+      {val:'c',text:'Do not install the undersized contactor; order the correct 22 kW rated unit and use a safe temporary workaround if production allows'},
+      {val:'d',text:'Install it and increase the overload relay setting to compensate'}
+    ],
+    correct:'c',
+    explanation:'Installing an undersized contactor is a safety and reliability risk. An AC-3 22 kW contactor is rated for the full-load current and switching duty of that motor. An undersized unit will overheat, weld its contacts, and fail prematurely — potentially causing a dangerous fault condition.'
+  },
+  {
+    id:'mc22',
+    text:'What is the purpose of a "snubber circuit" (RC circuit) fitted across a relay or contactor coil in a DC control circuit?',
+    options:[
+      {val:'a',text:'To increase the coil pull-in voltage for faster switching'},
+      {val:'b',text:'To suppress the voltage spike (back-EMF) generated when the coil is de-energised, protecting the control circuit and PLC outputs'},
+      {val:'c',text:'To slow down the contactor opening to reduce arc damage on the power contacts'},
+      {val:'d',text:'To provide a soft start to the coil to reduce audible noise'}
+    ],
+    correct:'b',
+    explanation:'When an inductive coil (relay, contactor, solenoid) is switched off, it generates a high-voltage back-EMF spike. A snubber (RC) or freewheeling diode (in DC circuits) clamps this spike, protecting transistor outputs on PLC cards and other sensitive control components from damage.'
+  },
+  {
+    id:'mc23',
+    text:'A machine has been experiencing repeated unplanned stops due to a photoelectric sensor giving false triggers. The sensor is detecting transparent plastic bottles on a conveyor. What is the <strong>most appropriate sensor solution</strong>?',
+    options:[
+      {val:'a',text:'Replace with an inductive proximity sensor'},
+      {val:'b',text:'Replace with a polarised retroreflective sensor or a through-beam sensor with background suppression, designed for transparent objects'},
+      {val:'c',text:'Increase the sensitivity potentiometer on the existing sensor to maximum'},
+      {val:'d',text:'Add a second identical photoelectric sensor in parallel'}
+    ],
+    correct:'b',
+    explanation:'Standard diffuse photoelectric sensors struggle with transparent or highly reflective objects because the beam passes through or reflects unpredictably. A polarised retroreflective sensor or a through-beam configuration is the correct solution for transparent target detection.'
+  },
+  {
+    id:'mc24',
+    text:'During a planned shutdown you are asked to carry out a thermal imaging inspection of the main LV electrical distribution panel. What are you primarily looking for?',
+    options:[
+      {val:'a',text:'Whether the panel paint has faded, indicating UV exposure'},
+      {val:'b',text:'Hot spots on busbars, terminals, cable connections, breakers, or fuses — indicating high resistance joints or overloaded circuits'},
+      {val:'c',text:'The internal temperature of the PLC rack to check for processor overheating'},
+      {val:'d',text:'Whether the panel has adequate labelling in compliance with Belgian NEN standards'}
+    ],
+    correct:'b',
+    explanation:'Thermal imaging of LV panels is a proven predictive maintenance technique for identifying high-resistance connections (loose terminals, corroded joints, overloaded cables) before they cause failure or fire. Hot spots invisible to the naked eye appear clearly in a thermal image.'
+  }
+];
+
+const BANK_TF = [
+  {
+    id:'tf1',
+    text:'<strong>True or False:</strong> Before performing any mechanical or electrical work on a machine, it is sufficient to press the machine\'s emergency stop button and begin work immediately.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'b',
+    explanation:'An emergency stop button is not a lockout device — it can be overridden or reset by someone else. Safe isolation requires full LOTO (Lockout / Tagout): isolate all energy sources, apply personal padlocks, dissipate stored energy, and verify zero energy before starting work.'
+  },
+  {
+    id:'tf2',
+    text:'<strong>True or False:</strong> A correctly-executed preventive maintenance programme generally reduces total maintenance costs over time by preventing costly unplanned breakdowns.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'a',
+    explanation:'Planned preventive maintenance — oil changes, inspections, part replacements at intervals — prevents catastrophic failures that cause long production stops, secondary damage, and emergency repair costs. This is a well-established principle in industrial reliability management.'
+  },
+  {
+    id:'tf3',
+    text:'<strong>True or False:</strong> When a three-phase motor\'s thermal overload relay trips, it is always acceptable to reset it immediately and restart the motor at full load without investigation.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'b',
+    explanation:'An overload trip indicates the motor drew excess current. Resetting without investigation risks motor winding damage and may mask a real fault — mechanical overload, phase loss, or blocked driven equipment. The root cause must be identified first.'
+  },
+  {
+    id:'tf4',
+    text:'<strong>True or False:</strong> Using the wrong type or grade of lubricant in a gearbox can cause premature gear and bearing failure even if the quantity applied is correct.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'a',
+    explanation:'Lubricant viscosity and additive package must match the gearbox design, load, speed, and temperature. The wrong grade — too thin, too thick, or wrong additive type — will damage gears and bearings even when the correct quantity is used.'
+  },
+  {
+    id:'tf5',
+    text:'<strong>True or False:</strong> A 4–20 mA analogue signal from a pressure transmitter that reads 4 mA always indicates a pressure of zero in the process.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'b',
+    explanation:'4 mA represents the live zero of the signal range — it corresponds to 0% of the measured range (which may be 0 bar, but may also be a non-zero low range value). If the signal drops to 0 mA, this typically indicates a broken wire or transmitter fault, not a process value.'
+  },
+  {
+    id:'tf6',
+    text:'<strong>True or False:</strong> Over-greasing a rolling element bearing is harmless — adding more grease than specified simply provides extra lubrication reserve.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'b',
+    explanation:'Over-greasing is a leading cause of bearing failure. Excess grease churns inside the bearing housing, generating heat that degrades the lubricant, increases operating temperature, and can damage bearing seals. Bearings should be greased to the manufacturer\'s specified quantity only.'
+  },
+  {
+    id:'tf7',
+    text:'<strong>True or False:</strong> When replacing a fuse in a control panel, it is acceptable to use a fuse with a higher current rating than specified if the correct rating is not available in stock, as long as the circuit does not exceed the new fuse\'s rating.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'b',
+    explanation:'Fuses protect wiring and equipment from overcurrent damage and fire. Installing a higher-rated fuse removes that protection — a fault that should blow the fuse may instead overheat wiring or damage equipment. Always use the correct rating; defer work until the correct part is available.'
+  },
+  {
+    id:'tf8',
+    text:'<strong>True or False:</strong> A vibration analysis reading showing a dominant frequency peak at exactly 1× the shaft rotation speed (1X) is typically associated with mass imbalance of the rotating component.',
+    options:[{val:'a',text:'True'},{val:'b',text:'False'}],
+    correct:'a',
+    explanation:'In vibration analysis, a strong 1X (once-per-revolution) frequency peak is the classic signature of rotating mass imbalance. Misalignment typically produces 2X or both 1X and 2X. Bearing defects produce high-frequency patterns. Diagnosing by frequency multiples is fundamental to predictive maintenance.'
+  }
+];
+
+const BANK_SC = [
+  {
+    id:'sc1',
+    text:'A packaging line palletiser has stopped. The HMI shows: "E-Stop circuit open." You reset all visible e-stop mushroom buttons but the fault does not clear.',
+    question:'What is your <strong>most structured diagnostic approach</strong>?',
+    options:[
+      {val:'a',text:'Bypass the e-stop circuit temporarily in the panel to restore production, then repair later'},
+      {val:'b',text:'Replace the safety relay module immediately as it must have failed'},
+      {val:'c',text:'Use the electrical schematic to trace the e-stop chain — check each button, rope pull, safety gate interlock, and safety relay in sequence with a multimeter to locate the open circuit'},
+      {val:'d',text:'Call the machine OEM immediately and wait for their engineer'}
+    ],
+    correct:'c',
+    explanation:'An "e-stop circuit open" fault with all buttons released indicates a hidden open contact — broken wire, gate interlock not reset, rope-pull left tripped, or failed safety relay input. Systematic circuit tracing using the diagram and multimeter is correct. Never bypass safety circuits.'
+  },
+  {
+    id:'sc2',
+    text:'The same mechanical seal on a cooling water pump has failed three times in six months. Each time the pump is repaired and put back in service without further investigation.',
+    question:'As the maintenance technician, what is the <strong>best long-term recommendation</strong>?',
+    options:[
+      {val:'a',text:'Accept this as normal wear; mechanical seals are consumable items'},
+      {val:'b',text:'Investigate the root cause — check alignment, shaft runout, cavitation, and operating conditions — and implement corrective action'},
+      {val:'c',text:'Install a higher-cost seal brand and continue the corrective maintenance approach'},
+      {val:'d',text:'Reduce the pump speed to lower the seal load'}
+    ],
+    correct:'b',
+    explanation:'Repeated seal failures are a reliability red flag. Common root causes include misalignment, excessive shaft vibration, cavitation, operating outside the pump curve, or incorrect seal selection. Simply replacing the seal without RCA wastes cost and labour.'
+  },
+  {
+    id:'sc3',
+    text:'On a Siemens S7-300 controlled mixing station, recipe logic should activate mixer motor M2 when tank B level sensor reads HIGH. The level sensor I/O status is ON in PLC online monitoring, M2 output also shows ON in the online monitor, but M2 does not start.',
+    question:'What is the <strong>most likely location of the fault</strong>?',
+    options:[
+      {val:'a',text:'The PLC program logic has an error in the rung controlling M2'},
+      {val:'b',text:'The level sensor in tank B is defective'},
+      {val:'c',text:'The PLC CPU is in STOP mode'},
+      {val:'d',text:'The fault is field-side: control voltage not reaching the motor starter, or the contactor for M2 is not pulling in — check the motor control panel'}
+    ],
+    correct:'d',
+    explanation:'The PLC online monitor shows both input and output as ON — PLC logic is functioning correctly. When the PLC output is energised but the motor does not run, the fault is downstream in the physical circuit: broken wire, blown fuse, tripped overload on M2, or failed contactor coil. Check the motor control cabinet.'
+  },
+  {
+    id:'sc4',
+    text:'You have just completed replacing a drive belt and realigning the motor coupling on a production machine. The machine has been isolated under LOTO during your work. Production wants to restart immediately.',
+    question:'What is the <strong>correct restart sequence</strong>?',
+    options:[
+      {val:'a',text:'Confirm all tools and materials are removed, guards are refitted, all persons are clear. Remove LOTO locks in the correct order, then perform a controlled test start at low load before returning to full production'},
+      {val:'b',text:'Inform the production supervisor to restart the machine; your work is done'},
+      {val:'c',text:'Remove the LOTO lock and allow production to start immediately at full speed to verify the repair under load'},
+      {val:'d',text:'Leave the LOTO in place and ask a colleague to verify; they can remove it when ready'}
+    ],
+    correct:'a',
+    explanation:'Safe LOTO removal requires: confirm work complete, guards refitted, all persons clear, then remove isolation in correct sequence. A controlled test start at low or no load allows verification of alignment and correct operation before committing to full production load.'
+  },
+  {
+    id:'sc5',
+    text:'A production line conveyor has stopped with no fault code on the HMI. The motor circuit breaker is not tripped. The motor is cool to touch. The PLC output for the conveyor motor is ON in online monitoring.',
+    question:'What is the <strong>most logical next diagnostic step</strong>?',
+    options:[
+      {val:'a',text:'Replace the motor immediately — it must have failed internally'},
+      {val:'b',text:'Check the motor contactor: verify the contactor is actually pulling in by listening for the click and checking if the auxiliary contact feedback is reaching the PLC input'},
+      {val:'c',text:'Reboot the PLC and clear all faults'},
+      {val:'d',text:'Increase the overload relay setting and restart'}
+    ],
+    correct:'b',
+    explanation:'PLC output is ON but the conveyor is stopped and no fault is shown. The contactor is the next link in the chain. If the contactor coil has failed, the PLC output is working but the contactor is not switching the motor circuit. Check the contactor physically and its auxiliary feedback input to the PLC.'
+  },
+  {
+    id:'sc6',
+    text:'A production machine has been stopping randomly 2–3 times per shift for the past week. Each time it stops, there is no fault code. After a manual reset, it restarts normally. The stops seem to occur more often in the afternoon.',
+    question:'What is the <strong>most likely cause and investigation approach</strong>?',
+    options:[
+      {val:'a',text:'The PLC battery is low and causing random program corruption'},
+      {val:'b',text:'A thermal protection device (motor thermistor, overload relay, or thermal switch) is tripping due to heat buildup in the afternoon — check cooling, ventilation, and ambient temperature trends'},
+      {val:'c',text:'The machine operator is pressing the stop button accidentally'},
+      {val:'d',text:'The supply frequency is varying — check the utility power quality'}
+    ],
+    correct:'b',
+    explanation:'Random stops that occur more frequently in the afternoon (when ambient temperatures are highest), leave no fault code, and reset normally are classic signs of thermal protection tripping. This could be a motor thermistor, cabinet overtemperature switch, or overload relay operating near its thermal threshold. Check for blocked cooling, dirty filters, or increased ambient temperature.'
+  },
+  {
+    id:'sc7',
+    text:'You are inspecting a gearbox that has developed an oil leak at the output shaft seal. The gearbox has been in service for 8 years. The oil level is correct and the gearbox runs quietly.',
+    question:'What is the <strong>best maintenance decision</strong>?',
+    options:[
+      {val:'a',text:'Ignore the leak — a small oil seep on an 8-year-old gearbox is acceptable'},
+      {val:'b',text:'Plan a seal replacement during the next scheduled shutdown; monitor oil level daily in the interim and clean the area to track leak rate'},
+      {val:'c',text:'Immediately stop the machine and replace the seal regardless of production impact'},
+      {val:'d',text:'Add a sealant product to the gearbox oil to swell the seal and stop the leak'}
+    ],
+    correct:'b',
+    explanation:'A leaking shaft seal on a running gearbox that is otherwise healthy should be planned for repair at the next shutdown to minimise production impact. In the interim, daily oil level checks and leak rate monitoring ensure the gearbox remains properly lubricated. Sealant additives are not an approved engineering repair and can contaminate oil and damage seals further.'
+  },
+  {
+    id:'sc8',
+    text:'An Allen-Bradley MicroLogix PLC-controlled filling line has been producing incorrect fill volumes. The fill valve opens and closes correctly, but the volumes are inconsistent. The line uses a flow meter connected to a PLC analogue input to control fill time.',
+    question:'What should you investigate <strong>first</strong>?',
+    options:[
+      {val:'a',text:'Replace the PLC analogue input module'},
+      {val:'b',text:'Check the flow meter calibration, the analogue signal wiring for interference, and verify the PLC scaling parameters match the flow meter output range'},
+      {val:'c',text:'Increase the fill timer duration in the program to compensate'},
+      {val:'d',text:'Replace the fill valve with a larger bore valve'}
+    ],
+    correct:'b',
+    explanation:'Inconsistent fill volumes with a flow meter-based system point to measurement or scaling issues before any mechanical or program change. Check: (1) flow meter calibration — is it reading correctly? (2) Analogue signal quality — noise or grounding issues cause erratic readings. (3) PLC scaling parameters — incorrect engineering unit scaling causes fill volume errors.'
+  }
+];
+
+// ─── RANDOMISE & DRAW ────────────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function drawQuestions() {
+  const mc = shuffle([...BANK_MC]).slice(0, 12);
+  const tf = shuffle([...BANK_TF]).slice(0, 4);
+  const sc = shuffle([...BANK_SC]).slice(0, 4);
+  return { mc, tf, sc };
+}
+
+let currentDraw = null;
+
+function buildExam() {
+  currentDraw = drawQuestions();
+  const body = document.getElementById('exam-body');
+  body.innerHTML = '';
+
+  let qNum = 1;
+
+  // Section A
+  body.innerHTML += `
+    <div class="section-header">
+      <div class="section-icon a">A</div>
+      <div class="section-info">
+        <h3>Section A — Multiple Choice</h3>
+        <p>12 questions &middot; 4 options each &middot; Select the single best answer</p>
+      </div>
+    </div>`;
+
+  currentDraw.mc.forEach(function(q) {
+    body.innerHTML += buildCard(q, qNum++, false);
+  });
+
+  // Section B
+  body.innerHTML += `
+    <div class="section-header">
+      <div class="section-icon b">B</div>
+      <div class="section-info">
+        <h3>Section B — True or False</h3>
+        <p>4 questions &middot; Select True or False for each statement</p>
+      </div>
+    </div>`;
+
+  currentDraw.tf.forEach(function(q) {
+    body.innerHTML += buildCard(q, qNum++, false);
+  });
+
+  // Section C
+  body.innerHTML += `
+    <div class="section-header">
+      <div class="section-icon c">C</div>
+      <div class="section-info">
+        <h3>Section C — Scenario-Based Questions</h3>
+        <p>4 questions &middot; Read each scenario carefully and select the best course of action</p>
+      </div>
+    </div>`;
+
+  currentDraw.sc.forEach(function(q) {
+    body.innerHTML += buildCard(q, qNum++, true);
+  });
+
+  attachListeners();
+  updateProgress();
+}
+
+function buildCard(q, num, isScenario) {
+  const numStr = num < 10 ? '0' + num : '' + num;
+  const letters = ['A','B','C','D'];
+
+  let questionHTML = '';
+  if (isScenario) {
+    questionHTML = `<div class="scenario-tag">Scenario</div>
+      <div class="scenario-box">${q.text}</div>
+      ${q.question}`;
+  } else {
+    questionHTML = q.text;
+  }
+
+  let optionsHTML = '';
+  q.options.forEach(function(opt, idx) {
+    optionsHTML += `<label class="option-label">
+      <input type="radio" name="q${num}" value="${opt.val}">
+      <span class="opt-letter">${letters[idx]}</span>
+      ${opt.text}
+    </label>`;
+  });
+
+  return `
+    <div class="question-card" data-q="${num}" data-qid="${q.id}" data-correct="${q.correct}">
+      <div class="question-top">
+        <div class="q-num">${numStr}</div>
+        <div class="q-text">${questionHTML}</div>
+      </div>
+      <div class="options-list">${optionsHTML}</div>
+      <div class="review-note" id="rn-${num}">
+        <strong>Correct answer: ${q.options.find(o=>o.val===q.correct).text}.</strong>
+        <span class="ans-label"> ${q.explanation}</span>
+      </div>
+    </div>`;
+}
+
+function attachListeners() {
+  for (let i = 1; i <= 20; i++) {
+    const radios = document.querySelectorAll('input[name="q' + i + '"]');
+    radios.forEach(function(r) { r.addEventListener('change', updateProgress); });
+  }
+}
+
+// ─── PROGRESS ────────────────────────────────────────────────────────────────
+function updateProgress() {
+  let count = 0;
+  for (let i = 1; i <= 20; i++) {
+    if (document.querySelector('input[name="q'+i+'"]:checked')) count++;
+  }
+  const pct = Math.round((count / 20) * 100);
+  document.getElementById('progress-text').textContent = count + ' of 20 answered';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ─── SUBMIT ───────────────────────────────────────────────────────────────────
+function submitExam() {
+  let unanswered = [];
+  for (let i = 1; i <= 20; i++) {
+    if (!document.querySelector('input[name="q'+i+'"]:checked')) unanswered.push(i);
+  }
+  const msg = document.getElementById('missing-msg');
+  if (unanswered.length > 0) {
+    msg.style.display = 'block';
+    msg.textContent = '\u26A0\uFE0F Please answer all 20 questions before submitting. Unanswered: Q' + unanswered.join(', Q');
+    return;
+  }
+  msg.style.display = 'none';
+
+  let correct = 0;
+  for (let i = 1; i <= 20; i++) {
+    const card = document.querySelector('.question-card[data-q="'+i+'"]');
+    const correctVal = card.getAttribute('data-correct');
+    const sel = document.querySelector('input[name="q'+i+'"]:checked');
+    const userVal = sel ? sel.value : null;
+    const labels = card.querySelectorAll('.option-label');
+
+    card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.disabled = true; });
+
+    labels.forEach(function(lbl) {
+      const radio = lbl.querySelector('input[type="radio"]');
+      if (radio.value === correctVal) lbl.classList.add('correct-ans');
+      else if (radio.value === userVal && userVal !== correctVal) lbl.classList.add('wrong-sel');
+    });
+
+    if (userVal === correctVal) {
+      correct++;
+      card.classList.add('answered-correct');
+    } else {
+      card.classList.add('answered-wrong');
+    }
+
+    const rn = document.getElementById('rn-'+i);
+    if (rn) rn.style.display = 'block';
+  }
+
+  const totalPoints = correct * 5;
+  const pct = Math.round((totalPoints / 100) * 100);
+  const passed = pct >= 75;
+
+  const panel = document.getElementById('result-panel');
+  const card2 = document.getElementById('result-card');
+  card2.className = 'result-card ' + (passed ? 'pass' : 'fail');
+  document.getElementById('result-verdict').textContent = passed ? '\u2713 PASS' : '\u2717 FAIL';
+  document.getElementById('result-msg').textContent = passed
+    ? 'Congratulations — you have met the minimum standard for this role.'
+    : 'You did not reach the pass mark of 75%. Review the highlighted answers and retry.';
+  document.getElementById('score-pts').textContent = totalPoints + ' / 100';
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-correct').textContent = correct + ' / 20';
+  document.getElementById('score-wrong').textContent = (20 - correct) + ' / 20';
+
+  panel.style.display = 'block';
+  document.getElementById('btn-row-submit').style.display = 'none';
+  document.getElementById('btn-row-retry').style.display = 'flex';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── RESET / RETRY ───────────────────────────────────────────────────────────
+function resetExam() {
+  for (let i = 1; i <= 20; i++) {
+    const card = document.querySelector('.question-card[data-q="'+i+'"]');
+    if (!card) continue;
+    card.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; r.disabled=false; });
+    card.querySelectorAll('.option-label').forEach(function(l){ l.classList.remove('correct-ans','wrong-sel'); });
+    card.classList.remove('answered-correct','answered-wrong');
+    const rn = document.getElementById('rn-'+i);
+    if (rn) rn.style.display = 'none';
+  }
+  document.getElementById('result-panel').style.display = 'none';
+  document.getElementById('missing-msg').style.display = 'none';
+  document.getElementById('btn-row-submit').style.display = 'flex';
+  document.getElementById('btn-row-retry').style.display = 'none';
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function retryExam() {
+  document.getElementById('result-panel').style.display = 'none';
+  document.getElementById('missing-msg').style.display = 'none';
+  document.getElementById('btn-row-submit').style.display = 'flex';
+  document.getElementById('btn-row-retry').style.display = 'none';
+  buildExam();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+buildExam();
+</script>
+</body>
+</html>
